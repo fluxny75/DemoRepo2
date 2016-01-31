@@ -1,0 +1,697 @@
+<html>
+<head>
+<link rel="stylesheet" href="css/style.css">
+	<style>
+		
+
+	</style>
+<script src="script/jquery.min.js"></script>
+</head>
+<body>
+	<div class="content_message">
+		<p class="descrition_label">You can enter a long message and the system will split it into multiple SMS messages if needed. <br>This may result in a higher count of MTs sent. <br> If you add a URL to this message, please make sure that it is contained in-full, in one sms message (Check the preview on the right side).
+
+		</p>
+
+		<div class="sms_mms">
+			<span> SMS or MMS: </span>
+			<label><input id="sms_check" type="checkbox" class="ios-switch green" /><div > <span id="1">MMS</span><div id="2"></div></div></label>
+			
+			<div class='opt_imgs opts_blue' > 
+				<span id="opt_imgs1b" class="imgs_opts_span" onclick="showHideURLModal()" ><img class="imgs_opts1" src="img/url-blue.png" alt="uno"></span>
+				<span id="opt_imgs2b" class="imgs_opts_span" onclick="showHideMediaModal()"><img class="imgs_opts2"  src="img/media-bue.png" alt="dos"></span>
+				<span id="opt_imgs3b" class="imgs_opts_span" onclick="showHideshortURLModal()"><img class="imgs_opts3" src="img/asu-blue.png" alt="dos"></span>
+			</div>
+			<div class='opt_imgs opts_green opt_hide' > 
+				<span id="opt_imgs1g" class="imgs_opts_span" onclick="showHideURLModal()" ><img class="imgs_opts1" src="img/url-green.png" alt="uno"></span>
+				<span id="opt_imgs2g" class="imgs_opts_span" onclick="showHideImgSMSModal()"><img class="imgs_opts2" src="img/media-green.png" alt="dos"></span>
+				<span id="opt_imgs3b" class="imgs_opts_span" onclick="showHideshortURLModal()"><img class="imgs_opts3" src="img/asu-green.png" alt="dos"></span>
+			</div>
+			
+			<div class="message_txt">
+				<div class="message_txt_label" >Message: <br> 
+					<span>0</span>charts.<br>
+					(<span>0</span>msg.)<br>
+				</div>
+				<textarea name="" id="message_txt_area" cols="67" rows="5"></textarea>
+				<div class="note">Note! Message send to Twitter can not be more than 140 characters long</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal_multimedia modal_hide modal">
+		<div class="overlay"> </div>
+		<div class="modal_title">ADD MEDIA FILE</div>
+		<label for="media_type">Media Type:</label>
+		<select name="media_type" id="media_type">
+			<option value="0" selected>Select Media Type</option>
+			<option value="img">Image</option>
+			<option value="qrcode">QR Code</option>
+			<option value="video">Video</option>
+			<option value="audio">Audio</option>
+		</select>
+		
+		<!-- Image media -->
+		<div class="img_media_opt media_hide_opt">
+			<input type="radio" name="img_media_opt" value="upload" id="upload_img">Upload new image
+			<input type="radio" name="img_media_opt" value="existing" id="existing_img">Select existing image
+		</div>
+
+		<div class="img_media_upload media_hide" >
+			<table>
+				<tr>
+					<td width="190">Short URL Domain</td>
+					<td>Title</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="img_upload_url" id="img_upload_url" style="width:85%">
+							<option value=""> http://</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" id="img_upload_tittle" style="">
+					</td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td style="padding-top:10px">Upload Image</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="file" name="img_Upload" id="img_Upload" >
+					</td>
+				</tr>
+				<tr>
+					<td class="noteModal" colspan="2">
+						Only jpg, gif & png image format it's allowed. Maximun video size is 500KB
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="img_media_existing media_hide">
+			<table>
+				<tr>
+					<td width="190">Select image</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="img_existing" class="existing_media_select" id="img_existing" >
+							<option value=""> --Select File--</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:10px">File Url</td>
+				</tr>
+				<tr>
+					<td >
+						<input type="text" class="existing_media_url" id="img_existing_url" >
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- QR code -->
+		<div class="qr_media media_hide">
+			<table>
+				<tr>
+					<td style="padding-top:8px">Select QR</td>
+				</tr>
+				<tr>
+					<td >
+						<select name="qr_design" id="qr_design" style="width:60%">
+							<option value=""> -- Select a QR --</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:8px">File Url</td>
+				</tr>
+				<tr>
+					<td >
+						<input type="text" id="qr_file_url" style="width:60%" >
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- Video Media -->
+		<div class="video_media_opt media_hide_opt">
+			<input type="radio" name="video_media_opt" value="upload" id="upload_video">Upload new video
+			<input type="radio" name="video_media_opt" value="existing" id="existing_video">Select existing video
+		</div>
+		<div class="video_media media_hide" >
+			<table>
+				<tr>
+					<td width="190">Short URL Domain</td>
+					<td>Title</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="video_url" id="video_url" style="width:85%">
+							<option value=""> http://</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" id="video_tittle" style="">
+					</td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td style="padding-top:10px">Upload Video</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="file" name="video_Upload" id="video_Upload" style="">
+					</td>
+				</tr>
+				<tr>
+					<td class="noteModal" colspan="2">
+						Only MP4 video format it's allowed. Maximun video size is 500KB
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="video_media_existing media_hide">
+			<table>
+				<tr>
+					<td width="190">Select video</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="video_existing" class="existing_media_select" id="video_existing" >
+							<option value=""> --Select File--</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:10px">File Url</td>
+				</tr>
+				<tr>
+					<td >
+						<input type="text" class="existing_media_url" id="video_existing_url" >
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- Video Audio -->
+		<div class="audio_media_opt media_hide_opt">
+			<input type="radio" name="audio_media_opt" value="upload" id="upload_audio">Upload new audio
+			<input type="radio" name="audio_media_opt" value="existing" id="existing_audio">Select existing audio
+		</div>
+		<div class="audio_media media_hide" >
+			<table>
+				<tr>
+					<td width="190">Short URL Domain</td>
+					<td>Title</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="audio_url" id="audio_url" style="width:85%">
+							<option value=""> http://</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" id="audio_tittle" style="">
+					</td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td style="padding-top:10px">Upload Audio</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="file" name="audio_Upload" id="audio_Upload" style="">
+					</td>
+				</tr>
+				<tr>
+					<td class="noteModal" colspan="2">
+						Only AAC audio format it's allowed. Maximun video size is 500KB
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="audio_media_existing media_hide">
+			<table>
+				<tr>
+					<td width="190">Select Audio</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="audio_existing" class="existing_media_select" id="audio_existing" >
+							<option value=""> --Select File--</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:10px">File Url</td>
+				</tr>
+				<tr>
+					<td >
+						<input type="text" class="existing_media_url" id="audio_existing_url" >
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="buttons_foot">
+			<center>
+			<button class="buttons" id="cancel_media" onclick="showHideMediaModal()"> Cancel </button>
+			<button class="buttons button_hide" id="addImg_media"> Add Image </button>
+			<button class="buttons button_hide" id="addQR_media"> Add QR </button>
+			<button class="buttons button_hide" id="addVideo_media"> Add Video </button>
+			<button class="buttons button_hide" id="addAudio_media"> Add Audio </button>
+			</center>
+		</div>
+	</div>
+
+	<!-- modal add image SMS -->
+	<div class="modal_img_sms modal_hide modal">
+		<div class="overlay"> </div>
+		<div class="modal_title">ADD IMAGE</div>
+				
+		<!-- Image media -->
+		<div class="img_media_opt ">
+			<input type="radio" name="img_media_opt" value="upload" id="upload_img">Upload new image
+			<input type="radio" name="img_media_opt" value="existing" id="existing_img">Select existing image
+		</div>
+
+		<div class="img_media_upload media_hide" >
+			<table>
+				<tr>
+					<td width="190">Short URL Domain</td>
+					<td>Title</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="img_upload_url" id="img_upload_url" style="width:85%">
+							<option value=""> http://</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" id="img_upload_tittle" style="">
+					</td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td style="padding-top:10px">Upload Image</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="file" name="img_Upload" id="img_sms_Upload" >
+					</td>
+				</tr>
+				<tr>
+					<td class="noteModal" colspan="2">
+						Only jpg, gif & png image format it's allowed. Maximun video size is 500KB
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="img_media_existing media_hide">
+			<table>
+				<tr>
+					<td width="190">Select image</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="img_existing" id="img_existing" >
+							<option value=""> --Select File--</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:10px">File Url</td>
+				</tr>
+				<tr>
+					<td >
+						<input type="text" id="img_existing_url" >
+					</td>
+				</tr>
+			</table>
+		</div>
+
+
+
+		<div class="buttons_foot">
+			<center>
+			<button class="buttons" id="cancel_media" onclick="showHideImgSMSModal()"> Cancel </button>
+			<button class="buttons" id="addImg_media"> Add Image </button>
+			</center>
+		</div>
+	</div>
+	<!-- modal URL -->
+	<div class="url_modal modal_hide modal">
+		<div class="overlay"> </div>
+		<div class="modal_title">ADD SHORT URL</div>
+
+		<!-- short url -->
+		<div class="short_url">
+			<table>
+				<tr>
+					<td width="235">
+						Crate a new short URL 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button class="buttons" id="createShortUrl"> Create Short URL </button>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:10px">Select Short URL</td>
+				</tr>
+				<tr>
+					<td >
+						<select name="select_short_url" id="select_short_url" >
+							<option value="0" selected>-- Select URL --</option>
+						</select>
+					</td>
+					<td>
+						<label for="shorturl_text" disabled> Short URL:</label>
+						<input name="shorturl_text" type="text" disabled style="width:165px">
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="buttons_foot">
+			<center>
+			<button class="buttons" id="cancelURL_media" onclick="showHideURLModal()"> Cancel </button>
+			<button class="buttons" id="addURL_media"> Add URL </button>
+			</center>
+		</div>
+	</div>
+	<!-- modal app URL -->
+	<div class="short_app_url_modal modal_hide modal">
+		<div class="overlay"> </div>
+		<div class="modal_title">Add Short APP URL</div>
+			<table>
+				<tr>
+					<td width="235">
+						Crate a new app short URL 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button class="buttons" id="createShortappUrl" onclick="showHideAddNewURLModal()"> Create App URL </button>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:10px">Choose existing URL</td>
+				</tr>
+				<tr>
+					<td >
+						<select name="select_short_url" id="select_short_url" >
+							<option value="0" selected>-- Select URL --</option>
+						</select>
+					</td>
+					<td>
+						<label for="shorturl_text" disabled> Short URL:</label>
+						<input name="shorturl_text" type="text" disabled style="width:165px">
+					</td>
+				</tr>
+			</table>
+		<div class="buttons_foot">
+			<center>
+			<button class="buttons" id="cancelURL_media" onclick="showHideshortURLModal()"> Cancel </button>
+			<button class="buttons" id="addURL_media"> Add URL </button>
+			</center>
+		</div>
+	</div>
+
+	<!-- modal new URL -->
+	<div class="new_url_modal modal_hide modal">
+		<div class="overlay"> </div>
+		<div class="modal_title">NEW APP URL</div>
+		<div class="new_url_content">
+			<table>
+				<tr>
+					<td>Title</td>
+					<td>Select URL Domain</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" style="width:90%">
+					</td>
+					<td>
+						<select name="" id="" style="width:100%">
+							<option value="">http://</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:8px">
+						iOS URL 
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="text" style="width:90%"> <span ><img class="help" src="img/help.png" alt=""></span>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:8px">Android Url</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="text" style="width:90%"><span ><img class="help" src="img/help.png" alt=""></span>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top:8px">OS Not Supported Message</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<textarea style="width:90%; padding:8px; font-family:'Verdana'" rows="3" placeholder='Your device is not supported at this time. Make sure you are using an Andorid or iOS device.'></textarea><span ><img class="help" src="img/help.png" alt=""></span>
+					</td>
+				</tr>
+			</table>
+			
+		</div>
+		<div class="buttons_foot">
+				<center>
+				<button class="buttons" id="addImg_media"> Add </button>
+				<button class="buttons" id="cancel_media" onclick="showHideAddNewURLModal()"> Cancel </button>
+				</center>
+		</div>
+	</div>
+<script>
+// change the text of the switch and the options
+$("#sms_check").click(function(event) {
+	$(this).toggleClass('sms');
+	if( $(this).is(':checked') ){
+		$('#1').html('SMS');
+		$('.opts_green').removeClass('opt_hide');
+		$('.opts_blue').addClass('opt_hide');
+	} else {
+		$('#1').html('MMS');
+		$('.opts_blue').removeClass('opt_hide');
+		$('.opts_green').addClass('opt_hide');
+	}
+});
+
+/********************** MODAL MEDIA **********************/
+function showHideMediaModal() {
+	$('.modal_multimedia').toggle('modal_hide');
+	clearModal ();
+	$('#media_type option[value=0]').prop('selected', true)
+	
+}
+
+//reset the options to add media
+function clearModal () {
+	$('.media_hide_opt').hide();
+	$('.media_hide').hide(); $('.button_hide').hide();
+	$('input[type=text]').val('');
+
+}
+
+//change the fields according to type
+$('#media_type').change(function(event) {
+	var tipo = $('#media_type option:selected').val();
+		clearModal();
+		$('input:radio[value=upload]').prop('checked', true);
+
+	switch(tipo) {
+	    case 'img':
+	        $('.img_media_opt').show();
+	        $('input:radio[name=img_media_opt]:first').prop('checked',true);
+	        // $('input:radio[id=existing_img]').prop('checked',true);
+	        $('.img_media_upload').show();
+	        break;
+
+	    case 'qrcode':
+	        $('.qr_media').show();
+			$('#addQR_media').show();
+	        break;
+
+        case 'video':
+        	$('.video_media_opt').show();
+        	$('.video_media').show();
+	        break;
+	    case 'audio':
+	    	$('.audio_media_opt').show();
+	    	$('.audio_media').show();
+	        break;
+	}
+});
+
+$('input:radio[name=img_media_opt]').change(function(event) {
+	var opt1=$('input:radio[name=img_media_opt]:checked').val();
+		$('.media_hide').hide(); 
+		$('.button_hide').hide();
+
+	if(opt1 =='upload'){
+		$('.img_media_upload').show();
+	}else{
+		$('.img_media_existing').show();
+	}
+	$('#addImg_media').show();
+
+});
+
+$('input:radio[name=video_media_opt]').change(function(event) {
+	var opt1=$('input:radio[name=video_media_opt]:checked').val();
+		$('.media_hide').hide(); 
+		$('.button_hide').hide();
+
+	if(opt1 =='upload'){
+		$('.video_media').show();
+	}else{
+		$('.video_media_existing').show();
+	}
+	$('#addVideo_media').show();
+
+});
+
+$('input:radio[name=audio_media_opt]').change(function(event) {
+	var opt1=$('input:radio[name=audio_media_opt]:checked').val();
+		$('.media_hide').hide(); 
+		$('.button_hide').hide();
+
+	if(opt1 =='upload'){
+		$('.audio_media').show();
+	}else{
+		$('.audio_media_existing').show();
+	}
+	$('#addAudio_media').show();
+
+});
+	
+//*********************** MODAL URL ****************//
+function showHideURLModal() {
+	$('.url_modal').toggle('modal_hide');
+}
+
+
+$('input:radio[name=url_opt]').change(function(event) {
+	var opt2=$('input:radio[name=url_opt]:checked').val();
+	
+	$('.media_hide').hide(); $('.short_url').hide();
+		console.log(opt2);
+	if(opt2 =='short'){
+		$('.short_url').show();
+	}else{
+		$('.short_app_url').show();
+	}
+	opt2='nada';
+});
+
+//******* MODAL NEW URL ******************/
+function showHideAddNewURLModal() {
+	$('.new_url_modal').toggle('modal_hide');
+}
+
+// evaluating the files to upload
+$('#img_Upload').change(function(event) {
+	validateSizeExt($(this).val(),'img_Upload','img');
+});
+$('#video_Upload').change(function(event) {
+	validateSizeExt($(this).val(),'video_Upload','video');
+});
+$('#audio_Upload').change(function(event) {
+	validateSizeExt($(this).val(),'audio_Upload','audio');
+});
+
+$('#img_sms_Upload').change(function(event) {
+	validateSizeExt($(this).val(),'img_sms_Upload','img');
+});
+
+
+
+
+function showHideshortURLModal () {
+	// $('.modal').hide();
+	$('.short_app_url_modal').toggle('modal_hide');
+}
+
+function showHideImgSMSModal () {
+	// $('.modal').hide();
+	$('.modal_img_sms').toggle('modal_hide');
+}
+//this function only validates the extension and size
+function validateSizeExt(file, inputfile,type) { 
+	if (type=='img')
+		var extensionAllowed = new Array(".gif", ".jpg", ".png");
+
+	if (type=='video')
+		var extensionAllowed = new Array(".mp4");
+	
+	if (type=='audio')
+		var extensionAllowed = new Array(".aac");
+	
+	 
+
+	var allowed=false;
+	var size=0;
+	if (!file) { 
+		//Si no tengo file, es que no se ha seleccionado un file en el formulario 
+		console.log("no file loaded"); 
+	}else{ 
+		//recupero la extensión de este nombre de file 
+		extension = (file.substring(file.lastIndexOf("."))).toLowerCase(); 
+
+		//compruebo si la extensión está entre las permitidas 
+		for (var i = 0; i < extensionAllowed.length; i++) { 
+			if (extensionAllowed[i] == extension) { 
+				allowed = true; 
+				break; 
+			} 
+		} 
+		if (allowed) { 
+			//submito! 
+			if (typeof FileReader !== "undefined") {
+				size = document.getElementById(inputfile).files[0].size;
+				// check file size
+				if (size <=519936) {
+					console.log(size);
+					console.log("File OK");
+					//Do something
+				}else{
+					alert("file too big");
+					$('#'+inputfile).val('');
+				}
+				
+			}else{
+				console.log("could not read file");
+			}
+			
+			return 1; 
+		}else{
+			alert("type of file not allowed");
+			$('#'+inputfile).val('');
+		} 
+	} 		
+	return 0; 
+}
+
+
+</script>
+</body>
+</html>
